@@ -39,7 +39,7 @@ body {
   /* Buttons */
   .btn-primary {
     @apply inline-flex items-center justify-center gap-2
-           bg-gradient-to-r from-crimson-500 to-crimson-600
+           bg-linear-to-r from-crimson-500 to-crimson-600
            text-white font-lato font-bold
            px-8 py-3.5 rounded-full
            shadow-red-sm hover:shadow-red-md
@@ -81,7 +81,7 @@ body {
 
   /* Heading gradient text */
   .gradient-text {
-    @apply bg-gradient-to-r from-crimson-500 to-gold bg-clip-text text-transparent;
+    @apply bg-linear-to-r from-crimson-500 to-gold bg-clip-text text-transparent;
   }
 
   /* Pattern background */
