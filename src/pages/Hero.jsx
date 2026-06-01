@@ -178,6 +178,6 @@ export default function Hero() {
         className="absolute bottom-0 left-0 right-0 h-24 pointer-events-none"
         style={{ background: 'linear-gradient(to bottom, transparent, #FFF8F0)' }}
       />
-    </section>
+      </section>
   )
 }
