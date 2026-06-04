@@ -1,50 +1,33 @@
-import { useState } from 'react'
-import { AnimatePresence } from 'framer-motion'
+import { Routes, Route } from 'react-router-dom'
+import { StoreProvider } from './context/StoreContext'
+import WebsitePage from './pages/WebsitePage'
+import AdminLayout from './pages/AdminLayout'
 
-// ── Components ────────────────────────────────────────────────────────────────
-import Loader          from './components/Loader'
-import Navbar          from './components/Navbar'
-import Hero            from './components/Hero'
-import About           from './components/About'
-import FeaturedProducts from './components/FeaturedProducts'
-import BestSellers     from './components/BestSellers'
-import WhyChooseUs     from './components/WhyChooseUs'
-import Testimonials    from './components/Testimonials'
-import Gallery         from './components/Gallery'
-import SpecialOffers   from './components/SpecialOffers'
-import Contact         from './components/Contact'
-import Footer          from './components/Footer'
-
+/**
+ * ARCHITECTURE — How live sync works:
+ *
+ *  StoreProvider (single React context)
+ *  ├── Route "/"        → WebsitePage   (reads from store)
+ *  └── Route "/admin/*" → AdminLayout   (writes to store)
+ *
+ *  Because both subtrees share ONE StoreProvider, any dispatch()
+ *  in the admin immediately re-renders the website — zero extra
+ *  infrastructure required.
+ *
+ *  To persist changes across page refreshes, swap useReducer in
+ *  StoreContext with a localStorage-backed solution or connect to
+ *  a real API (see BACKEND INTEGRATION comments in StoreContext.jsx).
+ */
 export default function App() {
-  const [loaded, setLoaded] = useState(false)
-
   return (
-    <>
-      {/* Loading screen — animates out once done */}
-      <AnimatePresence>
-        {!loaded && <Loader key="loader" onComplete={() => setLoaded(true)} />}
-      </AnimatePresence>
+    <StoreProvider>
+      <Routes>
+        {/* ── Public website ───────────────────────── */}
+        <Route path="/" element={<WebsitePage />} />
 
-      {/* Main site — fades in after loader exits */}
-      {loaded && (
-        <div className="relative">
-          <Navbar />
-
-          <main>
-            <Hero />
-            <About />
-            <FeaturedProducts />
-            <BestSellers />
-            <WhyChooseUs />
-            <Testimonials />
-            <Gallery />
-            <SpecialOffers />
-            <Contact />
-          </main>
-
-          <Footer />
-        </div>
-      )}
-    </>
+        {/* ── Admin panel ──────────────────────────── */}
+        <Route path="/admin/*" element={<AdminLayout />} />
+      </Routes>
+    </StoreProvider>
   )
 }
